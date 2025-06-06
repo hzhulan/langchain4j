@@ -131,6 +131,7 @@ public class LanguageModelQueryRouter implements QueryRouter {
     }
 
     protected Collection<ContentRetriever> parse(String choices) {
+
         if (choices == null) {
             return emptyList();
         }
