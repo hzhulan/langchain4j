@@ -132,6 +132,13 @@ public class LanguageModelQueryRouter implements QueryRouter {
     }
 
     protected Collection<ContentRetriever> parse(String choices) {
+        if (choices == null) {
+            return emptyList();
+        }
+        if (choices.contains("</think>")) {
+            choices = choices.split("</think>")[1];
+        }
+
         return stream(choices.split(","))
                 .map(String::trim)
                 .map(Integer::parseInt)
