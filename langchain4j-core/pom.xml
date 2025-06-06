@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>langchain4j-core</artifactId>
+    <version>1.0.0-beta3-cus</version>
     <name>LangChain4j :: Core</name>
     <description>Core classes and interfaces of LangChain4j</description>
 

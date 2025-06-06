@@ -1,19 +1,5 @@
 package dev.langchain4j.rag.query.router;
 
-import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.input.Prompt;
-import dev.langchain4j.model.input.PromptTemplate;
-import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import static dev.langchain4j.internal.Utils.getOrDefault;
 import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
 import static dev.langchain4j.internal.ValidationUtils.ensureNotEmpty;
@@ -22,6 +8,19 @@ import static dev.langchain4j.rag.query.router.LanguageModelQueryRouter.Fallback
 import static java.util.Arrays.stream;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+
+import dev.langchain4j.data.message.UserMessage;
+import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.input.Prompt;
+import dev.langchain4j.model.input.PromptTemplate;
+import dev.langchain4j.rag.content.retriever.ContentRetriever;
+import dev.langchain4j.rag.query.Query;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A {@link QueryRouter} that utilizes a {@link ChatLanguageModel} to make a routing decision.
@@ -52,8 +51,7 @@ public class LanguageModelQueryRouter implements QueryRouter {
                     {{options}}
                     It is very important that your answer consists of either a single number \
                     or multiple numbers separated by commas and nothing else!
-                    User query: {{query}}"""
-    );
+                    User query: {{query}}""");
 
     protected final ChatLanguageModel chatLanguageModel;
     protected final PromptTemplate promptTemplate;
@@ -61,15 +59,16 @@ public class LanguageModelQueryRouter implements QueryRouter {
     protected final Map<Integer, ContentRetriever> idToRetriever;
     protected final FallbackStrategy fallbackStrategy;
 
-    public LanguageModelQueryRouter(ChatLanguageModel chatLanguageModel,
-                                    Map<ContentRetriever, String> retrieverToDescription) {
+    public LanguageModelQueryRouter(
+            ChatLanguageModel chatLanguageModel, Map<ContentRetriever, String> retrieverToDescription) {
         this(chatLanguageModel, retrieverToDescription, DEFAULT_PROMPT_TEMPLATE, DO_NOT_ROUTE);
     }
 
-    public LanguageModelQueryRouter(ChatLanguageModel chatLanguageModel,
-                                    Map<ContentRetriever, String> retrieverToDescription,
-                                    PromptTemplate promptTemplate,
-                                    FallbackStrategy fallbackStrategy) {
+    public LanguageModelQueryRouter(
+            ChatLanguageModel chatLanguageModel,
+            Map<ContentRetriever, String> retrieverToDescription,
+            PromptTemplate promptTemplate,
+            FallbackStrategy fallbackStrategy) {
         this.chatLanguageModel = ensureNotNull(chatLanguageModel, "chatLanguageModel");
         ensureNotEmpty(retrieverToDescription, "retrieverToDescription");
         this.promptTemplate = getOrDefault(promptTemplate, DEFAULT_PROMPT_TEMPLATE);
@@ -175,15 +174,15 @@ public class LanguageModelQueryRouter implements QueryRouter {
         private PromptTemplate promptTemplate;
         private FallbackStrategy fallbackStrategy;
 
-        LanguageModelQueryRouterBuilder() {
-        }
+        LanguageModelQueryRouterBuilder() {}
 
         public LanguageModelQueryRouterBuilder chatLanguageModel(ChatLanguageModel chatLanguageModel) {
             this.chatLanguageModel = chatLanguageModel;
             return this;
         }
 
-        public LanguageModelQueryRouterBuilder retrieverToDescription(Map<ContentRetriever, String> retrieverToDescription) {
+        public LanguageModelQueryRouterBuilder retrieverToDescription(
+                Map<ContentRetriever, String> retrieverToDescription) {
             this.retrieverToDescription = retrieverToDescription;
             return this;
         }
@@ -199,11 +198,14 @@ public class LanguageModelQueryRouter implements QueryRouter {
         }
 
         public LanguageModelQueryRouter build() {
-            return new LanguageModelQueryRouter(this.chatLanguageModel, this.retrieverToDescription, this.promptTemplate, this.fallbackStrategy);
+            return new LanguageModelQueryRouter(
+                    this.chatLanguageModel, this.retrieverToDescription, this.promptTemplate, this.fallbackStrategy);
         }
 
         public String toString() {
-            return "LanguageModelQueryRouter.LanguageModelQueryRouterBuilder(chatLanguageModel=" + this.chatLanguageModel + ", retrieverToDescription=" + this.retrieverToDescription + ", promptTemplate=" + this.promptTemplate + ", fallbackStrategy=" + this.fallbackStrategy + ")";
+            return "LanguageModelQueryRouter.LanguageModelQueryRouterBuilder(chatLanguageModel="
+                    + this.chatLanguageModel + ", retrieverToDescription=" + this.retrieverToDescription
+                    + ", promptTemplate=" + this.promptTemplate + ", fallbackStrategy=" + this.fallbackStrategy + ")";
         }
     }
 }
